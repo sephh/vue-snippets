@@ -1,0 +1,83 @@
+import gql from 'graphql-tag';
+
+import { privateClient } from '../apollo';
+import {
+	$EntityName$QueryArgs,
+	$EntityName$AddArgs,
+	$EntityName$CommonArgs,
+	$EntityName$GQL,
+	$EntityName$SetArgs,
+	$EntityName$DeleteArgs,
+} from '../schema/$entityName$.schema';
+import { argsToString, argsToParamsString } from '../utils/graphql';
+
+export default {
+
+	add$EntityName$(body) {
+		const qry = gql`mutation add$EntityName$(
+			${argsToString($EntityName$CommonArgs, $EntityName$AddArgs)}
+		) {
+				Add$EntityName$(
+					${argsToParamsString($EntityName$CommonArgs, $EntityName$AddArgs)}
+				) {
+					${$EntityName$GQL}
+				}
+			}`;
+		return privateClient.mutate({
+			mutation: qry,
+			variables: body,
+		});
+	},
+
+	set$EntityName$(body) {
+		const qry = gql`mutation set$EntityName$(
+			${argsToString($EntityName$CommonArgs, $EntityName$SetArgs)}
+		) {
+			Set$EntityName$(
+				${argsToParamsString($EntityName$CommonArgs, $EntityName$SetArgs)}
+			){
+				${$EntityName$GQL}
+			}
+		}`;
+		return privateClient.mutate({
+			mutation: qry,
+			variables: body,
+		});
+	},
+
+	get$EntityName$s(variables) {
+		const qry = gql`query get$EntityName$s(
+			${argsToString($EntityName$QueryArgs)}
+		){
+			$EntityName$(
+				${argsToParamsString($EntityName$QueryArgs)}
+			){
+				${$EntityName$GQL}
+			}
+		}`;
+		return privateClient.query({
+			query: qry,
+			fetchPolicy: 'network-only',
+			variables,
+		});
+	},
+
+	
+	delete$EntityName$(id$EntityName$) {
+		const qry = gql`mutation delete$EntityName$(
+			${argsToString($EntityName$DeleteArgs)}
+		) {
+			Delete$EntityName$(
+				${argsToParamsString($EntityName$DeleteArgs)}
+			){
+				${$EntityName$GQL}
+			}
+		}`;
+
+		return privateClient.mutate({
+			mutation: qry,
+			variables: { id$EntityName$ },
+		});
+	},
+
+};
