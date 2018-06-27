@@ -1,0 +1,103 @@
+import { normalize } from 'normalizr';
+import sortBy from 'sort-by';
+import _ from 'lodash';
+
+import dao from '../../daos/$entityName$.dao';
+import { $ENTITY_SCHEMA$ } from '../../schema/$entityName$.schema';
+import errorHandler from '../../utils/error-handler';
+import * as types from '../mutation-types';
+
+/**
+ * @name $EntityName$
+ * @type {{$entityName$s: {}, ids: Array}}
+ */
+const initialState = {
+	$entityName$s: {},
+	ids: [],
+};
+
+const actions = {
+
+	fetch$EntityName$s({ commit }, entities) {
+		if (!entities.$entityName$s) return null;
+
+		// get $entityName$s ids
+		const ids = Object.keys(entities.$entityName$s);
+
+		// fetch $entityName$s
+		commit(types.FETCH_$ENTITY_NAME$S, { entities, result: ids });
+
+		// return $entityName$s
+		return ids.map(id => entities.$entityName$s[id]);
+	},
+
+	add$EntityName$({ dispatch }, body) {
+		return dao.add$EntityName$(body)
+			.then(res => normalize(res.data.Add$EntityName$, $ENTITY_SCHEMA$)) // normalize
+			.then(({ entities }) => dispatch('fetch$EntityName$s', entities)) // fetch $entityName$
+			.catch(errorHandler);
+	},
+
+	set$EntityName$({ dispatch }, body) {
+		return dao.set$EntityName$(body)
+			.then(res => normalize(res.data.Set$EntityName$, $ENTITY_SCHEMA$)) // normalize
+			.then(({ entities }) => dispatch('fetch$EntityName$s', entities)) // fetch $entityName$
+			.catch(errorHandler);
+	},
+
+	get$EntityName$s({ dispatch }, variables = {}) {
+		return dao.get$EntityName$s(variables)
+			.then(res => normalize(res.data.$EntityName$, [$ENTITY_SCHEMA$]))
+			.then(({ entities }) => dispatch('fetch$EntityName$s', entities));
+	},
+
+	delete$EntityName$({ commit }, { id$EntityName$ }) {
+		return dao.delete$EntityName$(id$EntityName$)
+			.then(res => res.data.Delete$EntityName$)
+			.then(() => {
+				// remove at store
+				commit(types.DELETE_$ENTITY_NAME$, { id$EntityName$ });
+				return id$EntityName$;
+			})
+			.catch(errorHandler);
+	},
+
+
+};
+
+const getters = {
+
+	$entityName$s: state => state.ids
+		.map(id => state.$entityName$s[id])
+		.sort(sortBy('nm$EntityName$')),
+
+	get$EntityName$ById: (state, rootGetters) => 
+		id$EntityName$ => 
+			rootGetters.$entityName$s.find(v => v.id$EntityName$ === id$EntityName$) || {},
+
+};
+
+const mutations = {
+
+	[types.FETCH_$ENTITY_NAME$](state, $entityName$) {
+		state.ids = _.union(state.ids, [$entityName$.id$EntityName$]);
+		state.$entityName$s = { ...state.$entityName$s, [$entityName$.id$EntityName$]: $entityName$ };
+	},
+
+	[types.FETCH_$ENTITY_NAME$S](state, { entities, result }) {
+		state.ids = _.union(state.ids, result);
+		_.merge(state.$entityName$s, entities.$entityName$s);
+	},
+
+	[types.DELETE_$ENTITY_NAME$](state, { id$EntityName$ }) {
+		state.ids = state.ids.filter(id => id !== id$EntityName$);
+	},
+
+};
+
+export default {
+	state: initialState,
+	actions,
+	getters,
+	mutations,
+};
