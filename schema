@@ -1,0 +1,21 @@
+import { schema } from 'normalizr';
+
+export const $SCHEMA$_SCHEMA = new schema.Entity('$entity$', {}, { idAttribute: 'id$PascalEntity$' });
+
+export const $PascalEntity$GQL = `
+`;
+
+export const $PascalEntity$QueryArgs = {
+};
+
+export const $PascalEntity$CommonArgs = {
+};
+
+export const $PascalEntity$AddArgs = {
+};
+
+export const $PascalEntity$SetArgs = {
+};
+
+export const $PascalEntity$DeleteArgs = {
+};
