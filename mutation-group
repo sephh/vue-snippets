@@ -1,0 +1,4 @@
+// $entityName$
+export const FETCH_$ENTITY_NAME$ = '[$entityName$] fetch $entityName$';
+export const FETCH_$ENTITY_NAME$S = '[$entityName$] fetch $entityName$s';
+export const DELETE_$ENTITY_NAME$ = '[$entityName$] delete $entityName$';
